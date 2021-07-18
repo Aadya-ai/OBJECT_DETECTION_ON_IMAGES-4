@@ -1,5 +1,6 @@
 img = "";
 status = "";
+objects = [];
 
 function preload() {
     img = loadImage('room.jpg');
@@ -24,21 +25,24 @@ function gotResult(error, results) {
         console.log(error);
     }
     console.log(results);
+    objects = results;
 }
 
 function draw() {
     image(img, 0, 0, 640, 420);
-    fill("#00008B");
-    text("Table", 60, 75);
-    noFill();
-    stroke("#00008B");
-    rect(50, 60, 550, 350);
 
-    fill("#00008B");
-    text("Computer", 210, 145);
-    noFill();
-    stroke("#00008B");
-    rect(200, 130, 240, 220);
+    if(status != "") {
+        for(i = 0; i < objects.length; i++) {
+            document.getElementById("status").innerHTML = "Status : Object Detected...";
+
+            fill("#800080");
+            percent = floor(objects[i].confidence*100);
+            text(objects[i].label + "" + percent + "%" + objects[i].x + 15, objects[i].y + 15);
+            noFill();
+            stroke("#800080");
+            rect(objects[i].x, objects[i].y, objects[i].width, objects[i].height);
+        }
+    }
 }
 
 function Kchat() {
